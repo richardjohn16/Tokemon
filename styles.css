@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* Make the video fill the background */
+#bgvid {
+  position: fixed;       /* stays in the background */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* keeps aspect ratio */
+  z-index: -1;           /* sends it behind everything else */
+}
+
+/* Center your logo or text */
+h1 {
+  position: relative;    /* makes z-index work properly */
+  text-align: center;
+  margin-top: 5%;
+  color: white;
+  z-index: 1;            /* ensures it appears above the video */
+}
+
+#logo {
+  width: 400px;          /* adjust as needed */
+}
+
+.Play {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: absolute;    /* allows centering */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* centers it perfectly */
+  z-index: 2;            /* above video and logo */
+}
+
+.Play:hover img {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}   
+
+
