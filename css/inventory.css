@@ -1,0 +1,103 @@
+/* Inventory UI matching the Shop theme */
+:root {
+  --bg:#061126; --card:#0b1624; --muted:#9fb0c3;
+  --accent:#6d28d9; --accent-2:#06b6d4;
+  --radius:12px; --max-w:1180px;
+  color-scheme: dark;
+  font-family: Inter, sans-serif;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background: linear-gradient(180deg,#021226 0%, #041736 100%);
+  color:#e6f3ff;
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* Top bar */
+.topbar{
+  width:100%;
+  max-width:var(--max-w);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:44px;height:44px;border-radius:8px}
+.muted{color:var(--muted)}
+.top-controls{display:flex;gap:12px}
+.btn{
+  padding:8px 12px;background:var(--accent);border:none;color:white;
+  border-radius:10px;cursor:pointer;font-weight:600;
+}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04)}
+
+/* layout */
+.container{
+  width:100%;max-width:var(--max-w);
+  display:grid;grid-template-columns:240px 1fr;gap:20px;
+}
+
+/* Filters area */
+.filters{
+  background:var(--card);padding:16px;border-radius:12px;
+  border:1px solid rgba(255,255,255,0.03);
+}
+.filters h3{margin:0 0 6px}
+.filter-group label{display:block;padding:5px 0;color:var(--muted)}
+select{
+  width:100%;padding:8px;background:transparent;color:white;
+  border-radius:10px;border:1px solid rgba(255,255,255,0.08);
+}
+
+/* inventory section */
+.inventory{
+.inventory h2{margin:0;font-size:22px}
+.small{font-size:13px}  
+}
+
+/* grid */
+.grid{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+  gap:18px;
+}
+
+/* card */
+.card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.03);
+  border-radius:12px;overflow:hidden;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 8px 28px rgba(0,0,0,0.35)}
+.card-media{position:relative}
+.card-media img{width:100%;height:160px;object-fit:cover}
+.badge{
+  position:absolute;left:12px;top:12px;padding:6px 12px;font-size:12px;
+  border-radius:999px;font-weight:700;background:rgba(0,0,0,0.4);
+}
+.badge.rare{background:#2563eb}
+.badge.epic{background:#7c3aed}
+.badge.legendary{background:#f59e0b}
+.card-body{padding:12px}
+.card-title{margin:0;font-size:15px}
+.traits{display:flex;gap:8px;margin-top:6px;color:var(--muted);font-size:13px}
+
+/* actions */
+.actions{margin-top:12px;display:flex;gap:6px}
+.btn.small{padding:6px 8px;font-size:13px}
+.btn.outline{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+.site-footer{margin-top:20px;color:var(--muted);text-align:center;font-size:13px}
+
+/* responsive */
+@media(max-width:900px){
+  .container{grid-template-columns:1fr}
+}

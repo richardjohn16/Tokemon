@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tokemon Inventory</title>
+  <link rel="stylesheet" href="../css/inventory.css">
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <img src="https://via.placeholder.com/40" class="logo">
+    <div>
+      <h1>Your Tokemon Inventory</h1>
+      <p class="muted">Connected Wallet: <span id="walletAddress">-</span></p>
+    </div>
+  </div>
+
+  <div class="top-controls">
+    <button class="btn ghost" onclick="location.href='marketplace.html'">Marketplace</button>
+    <button class="btn" id="connectWallet">Connect Wallet</button>
+  </div>
+</header>
+
+
+<main class="container">
+
+  <!-- Sidebar Filters -->
+  <aside class="filters">
+    <h3>Filters</h3>
+    <div class="filter-group">
+      <label><input type="checkbox"> Fire</label>
+      <label><input type="checkbox"> Water</label>
+      <label><input type="checkbox"> Electric</label>
+      <label><input type="checkbox"> Grass</label>
+    </div>
+
+    <h3>Rarity</h3>
+    <div class="filter-group">
+      <label><input type="checkbox"> Common</label>
+      <label><input type="checkbox"> Rare</label>
+      <label><input type="checkbox"> Epic</label>
+      <label><input type="checkbox"> Legendary</label>
+    </div>
+
+    <h3>Sort</h3>
+    <select>
+      <option>Newest</option>
+      <option>Oldest</option>
+      <option>Level Highest</option>
+      <option>Rarity</option>
+    </select>
+  </aside>
+
+
+  <!-- Inventory Grid -->
+  <section class="inventory">
+    <h2>Your Cards</h2>
+    <p class="muted small">These Tokemons come from your NFT wallet.</p>
+
+    <div class="grid" id="inventoryGrid">
+      <!-- Placeholder sample items (JS will replace these) -->
+
+      <article class="card">
+        <div class="card-media">
+          <img src="https://via.placeholder.com/300x200?text=Tokemon+Sample">
+          <span class="badge rare">Rare</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Tokemon #12 — AquaShell</h3>
+          <p class="muted small">Water • Level 14</p>
+
+          <div class="traits">
+            <span>HP: 68</span>
+            <span>ATK: 52</span>
+            <span>DEF: 60</span>
+          </div>
+
+          <div class="actions">
+            <button class="btn outline small">View</button>
+            <button class="btn small" style="background:#ef4444;">Release</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-media">
+          <img src="https://via.placeholder.com/300x200?text=Tokemon+Sample">
+          <span class="badge epic">Epic</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">Tokemon #27 — ThunderPup</h3>
+          <p class="muted small">Electric • Level 21</p>
+
+          <div class="traits">
+            <span>HP: 72</span>
+            <span>ATK: 90</span>
+            <span>DEF: 55</span>
+          </div>
+
+          <div class="actions">
+            <button class="btn outline small">View</button>
+            <button class="btn small" style="background:#ef4444;">Release</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+</main>
+
+
+<footer class="site-footer">
+  <p class="muted">Tokemon • Inventory (Sepolia Testnet)</p>
+</footer>
+
+
+</body>
+</html>

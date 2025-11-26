@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tokemon Shop — Buy Cards</title>
+  <link rel="stylesheet" href="../css/marketplace.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="https://via.placeholder.com/40" alt="logo" class="logo">
+      <div>
+        <h1>Tokemon Shop</h1>
+        <p class="muted">Buy cards with Tokecoins</p>
+      </div>
+    </div>
+
+    <div class="top-controls">
+      <div class="search">
+        <input id="searchInput" placeholder="Search Tokemons, types, rarity..." />
+      </div>
+
+      <div class="actions">
+        <p id="walletDisplay">Wallet: Loading...</p>
+        <button class="btn ghost" onclick="location.href='inventory.html'">Inventory</button>
+        <button class="btn" id="connectBtn">Connect Wallet</button>
+        <!-- CSS-only cart toggle using checkbox (for demo) -->
+        <label for="cart-toggle" class="cart-btn" title="View cart">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4"></path><circle cx="10" cy="19" r="1"></circle><circle cx="18" cy="19" r="1"></circle></svg>
+          <span class="cart-count">0</span>
+        </label>
+        <input id="cart-toggle" type="checkbox" class="hidden-toggle" />
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <aside class="filters">
+      <h3>Filters</h3>
+      <div class="filter-group">
+        <label><input type="checkbox"> Common</label>
+        <label><input type="checkbox"> Rare</label>
+        <label><input type="checkbox"> Epic</label>
+        <label><input type="checkbox"> Legendary</label>
+      </div>
+
+      <h3>Sort</h3>
+      <select>
+        <option>Latest</option>
+        <option>Price: Low → High</option>
+        <option>Price: High → Low</option>
+        <option>Rarity</option>
+      </select>
+
+      <div class="promo">
+        <h4>Special Offer</h4>
+        <p>Get a free common Tokemon with any purchase over 100 TCOIN.</p>
+      </div>
+    </aside>
+
+    <section class="shop">
+      <div class="shop-header">
+        <h2>Featured Cards</h2>
+        <p class="muted">Tap a card to view metadata. Buy with TCOIN.</p>
+      </div>
+
+      <div class="grid" id="productGrid">
+        <!-- Example card (duplicate/edit for more) -->
+        <article class="card" data-tokenid="0" data-price="10">
+          <div class="card-media">
+            <img src="https://via.placeholder.com/320x220?text=Tokemon+0" alt="Tokemon #0">
+            <span class="badge common">Common</span>
+            <button class="fav-btn" aria-label="Favorite">♥</button>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">Tokemon #0 — Sparky</h3>
+            <p class="muted small">Electric • Level 5</p>
+            <div class="traits">
+              <span>HP: 40</span>
+              <span>Atk: 60</span>
+              <span>Def: 30</span>
+            </div>
+
+            <div class="buy-row">
+              <div class="price">
+                <span class="tcoin">TCOIN</span>
+                <strong>10</strong>
+              </div>
+              <div class="cta">
+                <button class="btn outline small">Details</button>
+                <button class="btn primary small buy-btn">Buy</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-tokenid="1" data-price="75">
+          <div class="card-media">
+            <img src="https://via.placeholder.com/320x220?text=Tokemon+1" alt="Tokemon #1">
+            <span class="badge epic">Epic</span>
+            <button class="fav-btn" aria-label="Favorite">♥</button>
+          </div>
+          <div class="card-body">
+            <h3 class="card-title">Tokemon #1 — Flameon</h3>
+            <p class="muted small">Fire • Level 18</p>
+            <div class="traits">
+              <span>HP: 90</span>
+              <span>Atk: 120</span>
+              <span>Def: 70</span>
+            </div>
+
+            <div class="buy-row">
+              <div class="price">
+                <span class="tcoin">TCOIN</span>
+                <strong>75</strong>
+              </div>
+              <div class="cta">
+                <button class="btn outline small">Details</button>
+                <button class="btn primary small buy-btn">Buy</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- add more cards as needed -->
+      </div>
+    </section>
+  </main>
+
+  <!-- CSS-only cart drawer -->
+  <aside class="cart-drawer" aria-hidden="true">
+    <h3>Your Cart</h3>
+    <div class="cart-items" id="cartItems">
+      <p class="muted">No items in cart.</p>
+    </div>
+    <div class="cart-footer">
+      <div class="total">Total: <strong id="cartTotal">0</strong> TCOIN</div>
+      <div class="cart-actions">
+        <button class="btn ghost">Continue Shopping</button>
+        <button class="btn primary">Checkout</button>
+      </div>
+    </div>
+  </aside>
+
+  <footer class="site-footer">
+    <p class="muted">Sepolia testnet • Tokemon Demo</p>
+  </footer>
+
+  <!-- NOTE: no JS logic included — hook these classes/attributes from your app.js -->
+   <script type="module" src="../js/marketplace.js"></script>
+</body>
+</html>

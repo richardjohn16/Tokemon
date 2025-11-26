@@ -19,9 +19,10 @@ connectBtn.addEventListener("click", async () => {
         statusText.textContent = "Connected: " + account;
         statusText.style.color = "green";
 
-        // Redirect to Pokémon home page after 1 second
+        
         setTimeout(() => {
-            window.location.href = "home.html";
+            window.location.href = "./html/home.html";
+
         }, 1000);
 
     } catch (err) {
