@@ -1,0 +1,206 @@
+
+
+#battlebg {
+  position: fixed;   
+  top: 0;
+  left: 0;
+  width: 100vw;       
+  height: 100vh;      
+  object-fit: cover;  
+  z-index: -1;        
+}
+.carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px;
+
+    /* Prevent vertical/horizontal shifting */
+    height: 150px; 
+}
+
+.carousel img {
+    width: 120px;
+    height: 120px;   /* LOCK height */
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.carousel p {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 10px;
+    color: #fff;
+
+    /* prevent text changing container size */
+    height: 28px;  /* matches one line of text */
+    overflow: hidden;
+}
+
+
+.nav-btn {
+    font-size: 26px;
+    padding: 10px 15px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+    color: #fff;
+}
+
+#selectBtn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+    color: #fff;
+}
+
+#selectedDisplay {
+    position: fixed;
+    bottom: 100px;   /* move up from the edge */
+    left: 340px;     /* move right from the edge */
+    text-align: left;
+    z-index: 1000;  /* keep it above other UI */
+    size: 100px;
+    color: white;
+}
+
+.pokemon-selection-img {
+    width: 180px;   /* increase this number */
+    image-rendering: pixelated;
+    
+}
+
+#opponentSelect {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    text-align: center;
+    color: white;
+    
+}
+
+.opp-btn {
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+    color: #fff;
+}
+
+.opp-btn.selected {
+    background: #ffcc00;
+    color: black;
+    border-color: #ffea6a;
+    
+}
+
+#startRoundRobin {
+    margin-top: 15px;
+    padding: 10px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+    color: #fff;
+}
+
+.hidden {
+    display: none;
+}
+
+
+#enemyDisplay {
+    position: fixed;
+    top: 150px;
+    right: 400px;
+    color: #fff;
+}
+
+.enemy-pokemon {
+    width: 120px;
+    image-rendering: pixelated;
+}
+
+#defeatEnemyBtn {
+    position: fixed;
+    top: 200px;
+    right: 40px;
+    padding: 10px 25px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+    color: #fff;
+}
+
+.floating-battle-menu {
+    position: fixed;
+    top: 50%;
+    left: 30px;
+    transform: translateY(-50%);
+    width: 180px;
+    padding: 20px;
+
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 16px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+
+    color: #fff;
+    text-align: center;
+    z-index: 999;
+}
+
+.floating-battle-menu button,
+.floating-battle-menu a {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;   /* makes widths match EXACTLY */
+
+    padding: 12px;           
+    margin-bottom: 12px;
+
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 12px;
+
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.2;         /* fixes text height difference */
+
+    text-decoration: none;    /* fixes <a> underline spacing */
+    text-align: center;
+
+    cursor: pointer;
+    transition: 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.floating-battle-menu button:hover,
+.floating-battle-menu a:hover {
+    background: rgba(255, 255, 255, 0.32);
+    transform: translateY(-2px);
+}
+
+
+
+
+
+
+
+
+
+
