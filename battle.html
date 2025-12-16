@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Round Robin Pokémon Battle</title>
-<link rel="stylesheet" href="/css/battle.css">
+    <meta charset="UTF-8">
+    <title>Round Robin Pokémon Battle</title>
+    <link rel="stylesheet" href="/css/battle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-<img src="/assets/battlebg.jpg" id="battlebg">
+    <img src="/assets/battlebg.jpg" id="battlebg">
 
-<div id="pokemonCarouselContainer">
-    <div class="carousel-container">
-        <button class="nav-btn" id="prevBtn">⟨</button>
+    <!-- Pokémon Selection Carousel -->
+    <div id="pokemonCarouselContainer">
+        <div class="carousel-container">
+            <button class="nav-btn" id="prevBtn">⟨</button>
 
-        <div class="carousel">
-            <img id="pokemonSprite" src="" alt="Pokemon">
-            <p id="pokemonName"></p>
+            <div class="carousel">
+                <img id="pokemonSprite" src="" alt="Pokemon">
+                <p id="pokemonName"></p>
+            </div>
+
+            <button class="nav-btn" id="nextBtn">⟩</button>
         </div>
-    <button class="nav-btn" id="nextBtn">⟩</button>
 
-</div>
-<button id="selectBtn">Select Pokémon</button>
-</div>
+        <button id="selectBtn">Select Pokémon</button>
+    </div>
 
-<div id="selectedDisplay"></div>
+    <!-- Selected Player Pokémon Display -->
+    <div id="selectedDisplay"></div>
 
-<div id="opponentSelect" class="hidden">
-    <h2>Select number of opponents:</h2>
+    <!-- Opponent Count Selection -->
+    <div id="opponentSelect" class="hidden">
+        <h2>Select number of opponents:</h2>
+        <button class="opp-btn" data-count="3">3</button>
+        <button class="opp-btn" data-count="5">5</button>
+        <button class="opp-btn" data-count="9">9</button>
+        <button id="startRoundRobin" class="hidden">Start Round Robin</button>
+    </div>
 
-    <button class="opp-btn" data-count="3">3</button>
-    <button class="opp-btn" data-count="5">5</button>
-    <button class="opp-btn" data-count="9">9</button>
+    <!-- Enemy Pokémon Display -->
+    <div id="enemyDisplay"></div>
 
-    <button id="startRoundRobin" class="hidden">Start Round Robin</button>
-</div>
+    <!-- Floating Side Menu -->
+    <div class="floating-battle-menu">
+        <h3>Battle Menu</h3>
+        <button id="selectPokemonBtn" class="menu-btn">Select Pokémon</button>
+        <a href="home.html" class="menu-btn home-btn">Home</a>
+    </div>
 
-
-<div id="enemyDisplay"></div>
-<button id="defeatEnemyBtn" class="hidden">Defeat Enemy</button>
-
-<div class="floating-battle-menu">
-    <h3>Battle Menu</h3>
-
-    <button id="selectPokemonBtn" class="menu-btn">Select Pokémon</button>
-
-    <a href="/html/home.html" class="menu-btn home-btn">Home</a>
-</div>
-
-
-<script src="js/battle.js"></script>
+    <script src="/js/battle.js"></script>
+</body>
+</html> 

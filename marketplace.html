@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokemon Marketplace</title>
+    <link rel="stylesheet" href="/css/marketplace.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <img src="/assets/greenbg.png" id="homebg">
+
+    <div class="topnav">
+        <a class="navlogo"><img src="/assets/Tokemon.png" alt="Tokemon Logo"></a>
+        <a href="home.html">Home</a>
+        <a href="inventory.html">Inventory</a>
+        <a class="active" href="marketplace.html">Marketplace</a>
+        <a href="battle.html">Battle</a>
+        <a href="#" id="logoutBtn" class="logout">Logout</a>
+    </div>
+
+    <div class="marketplace-content">
+        <h1>Marketplace</h1>
+        <div id="coins">Coins: <span id="coin-amount">0</span></div>
+        
+        <h2>Available for Purchase</h2>
+        <div id="available-pokemon"></div>
+        
+        <h2>My Pokemon</h2>
+        <div id="my-pokemon"></div>
+    </div>
+
+    <script src="/js/marketplace.js"></script>
+</body>
+</html>

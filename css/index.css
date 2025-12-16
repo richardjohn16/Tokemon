@@ -1,0 +1,55 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+  font-family: 'Press Start 2P', monospace;
+}
+
+
+#bgvid {
+  position: fixed;   
+  top: 0;
+  left: 0;
+  width: 100vw;       
+  height: 100vh;      
+  object-fit: cover;  
+  z-index: -1;        
+}
+
+#logo {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.play img {
+    width: 100%;                /* Fill the button exactly */
+    height: 100%;               /* Fill the button exactly */
+    object-fit: contain;        /* Keep image proportions - no stretching! (use 'cover' if you want cropped fill) */
+    display: block;             /* Remove any inline gaps */
+    transition: opacity 0.3s ease;  /* Optional: smooth fade when swapping images */
+}
+
+/* Optional: Disable look when connecting */
+.play:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+/* Optional: Hover effect on normal state */
+.play:not(:disabled):hover img {
+    opacity: 0.9;               /* Slight dim on hover for feedback */
+}

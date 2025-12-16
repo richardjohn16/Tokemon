@@ -1,113 +1,103 @@
- const loginBtn = document.getElementById('loginBtn');
-        const loginText = document.getElementById('loginText');
+const loginBtn = document.getElementById('loginBtn');
+const buttonImg = loginBtn.querySelector('img');  
 
-        // Sepolia chain ID (in hexadecimal)
-        const SEPOLIA_CHAIN_ID = '0xaa36a7';
+const ORIGINAL_SRC = '/assets/Play.png';
+const CONNECTING_SRC = '/assets/Connecting.png';  // Change to your filename
+const SWITCHING_SRC = '/assets/switching-to-sepolia.png';    // Change to your filename (can be same as connecting)
 
-        async function switchToSepolia() {
+const SEPOLIA_CHAIN_ID = '0xaa36a7';
+
+async function switchToSepolia() {
+    buttonImg.src = SWITCHING_SRC;  // Show switching image
+
+    try {
+        await ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: SEPOLIA_CHAIN_ID }],
+        });
+    } catch (switchError) {
+        if (switchError.code === 4902) {
             try {
                 await ethereum.request({
-                    method: 'wallet_switchEthereumChain',
-                    params: [{ chainId: SEPOLIA_CHAIN_ID }],
+                    method: 'wallet_addEthereumChain',
+                    params: [{
+                        chainId: SEPOLIA_CHAIN_ID,
+                        chainName: 'Sepolia Test Network',
+                        nativeCurrency: { name: 'Sepolia Ether', symbol: 'SEP', decimals: 18 },
+                        rpcUrls: ['https://rpc.sepolia.org'],
+                        blockExplorerUrls: ['https://sepolia.etherscan.io']
+                    }],
                 });
-            } catch (switchError) {
-                // If Sepolia is not added to MetaMask
-                if (switchError.code === 4902) {
-                    try {
-                        await ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: SEPOLIA_CHAIN_ID,
-                                chainName: 'Sepolia Test Network',
-                                nativeCurrency: {
-                                    name: 'Sepolia Ether',
-                                    symbol: 'SEP',
-                                    decimals: 18
-                                },
-                                rpcUrls: ['https://rpc.sepolia.org'],
-                                blockExplorerUrls: ['https://sepolia.etherscan.io']
-                            }],
-                        });
-                    } catch (addError) {
-                        alert('Failed to add Sepolia network. Please add it manually.');
-                        throw addError;
-                    }
-                } else {
-                    throw switchError;
-                }
+            } catch (addError) {
+                alert('Failed to add Sepolia network. Please add it manually.');
+                throw addError;
             }
+        } else {
+            throw switchError;
+        }
+    }
+}
+
+async function connectWallet() {
+    if (typeof window.ethereum === 'undefined') {
+        alert('MetaMask is not installed! Please install MetaMask to continue.');
+        window.open('https://metamask.io/download/', '_blank');
+        return;
+    }
+
+    buttonImg.src = CONNECTING_SRC;  // Show connecting animation
+    loginBtn.disabled = true;
+
+    try {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+        console.log('Connected account:', account);
+
+        const currentChainId = await ethereum.request({ method: 'eth_chainId' });
+
+        if (currentChainId !== SEPOLIA_CHAIN_ID) {
+            await switchToSepolia();
         }
 
-        async function connectWallet() {
-            if (typeof window.ethereum === 'undefined') {
-                alert('MetaMask is not installed! Please install MetaMask to continue.');
-                window.open('https://metamask.io/download/', '_blank');
-                return;
-            }
+        // Success
+        localStorage.setItem('userWallet', account);
+        // After successful connection and network check:
+        buttonImg.src = '/assets/Success.png';  // e.g. a checkmark or "Connected" icon
+        setTimeout(() => {
+        window.location.href = '/home.html';
+        }, 1000);
 
-            loginText.textContent = 'Connecting...';
-            loginBtn.disabled = true;
+    } catch (error) {
+        console.error(error);
+        let message = 'Connection rejected or failed.';
+        if (error.code === 4001) message = 'You rejected the connection request.';
+        else if (error.code === -32002) message = 'Connection request already pending. Check MetaMask.';
 
-            try {
-                // Request account access
-                const accounts = await ethereum.request({
-                    method: 'eth_requestAccounts'
-                });
+        alert(message);
 
-                const account = accounts[0];
-                console.log('Connected account:', account);
+        // Restore original button on error
+        buttonImg.src = ORIGINAL_SRC;
+        loginBtn.disabled = false;
+    }
+}
 
-                // Check current network
-                const currentChainId = await ethereum.request({ method: 'eth_chainId' });
+loginBtn.addEventListener('click', connectWallet);
 
-                if (currentChainId !== SEPOLIA_CHAIN_ID) {
-                    loginText.textContent = 'Switching to Sepolia...';
-                    await switchToSepolia();
+// Auto-connect on load (unchanged)
+window.addEventListener('load', async () => {
+    if (window.ethereum) {
+        try {
+            const accounts = await ethereum.request({ method: 'eth_accounts' });
+            if (accounts.length > 0) {
+                const chainId = await ethereum.request({ method: 'eth_chainId' });
+                if (chainId === SEPOLIA_CHAIN_ID) {
+                    localStorage.setItem('userWallet', accounts[0]);
+                    window.location.href = '/home.html';
                 }
-
-                // Success! Redirect to home page
-                loginText.textContent = 'Success! Redirecting...';
-
-                // Optional: Save wallet address in localStorage/sessionStorage if needed later
-                localStorage.setItem('userWallet', account);
-
-                // Redirect (change '/home' to your actual home route)
-                setTimeout(() => {
-                    window.location.href = '/home.html';  // Change this to your home page URL
-                }, 1000);
-
-            } catch (error) {
-                console.error(error);
-                let message = 'Connection rejected or failed.';
-                if (error.code === 4001) {
-                    message = 'You rejected the connection request.';
-                } else if (error.code === -32002) {
-                    message = 'Connection request already pending. Check MetaMask.';
-                }
-                alert(message);
-                loginText.textContent = 'Login with MetaMask';
-                loginBtn.disabled = false;
             }
+        } catch (err) {
+            console.log('Auto-connect failed');
         }
+    }
+});
 
-        // Attach click event
-        loginBtn.addEventListener('click', connectWallet);
-
-        // Optional: Auto-connect if already authorized (improves UX)
-        window.addEventListener('load', async () => {
-            if (window.ethereum) {
-                try {
-                    const accounts = await ethereum.request({ method: 'eth_accounts' });
-                    if (accounts.length > 0) {
-                        // User already connected before → auto-login
-                        const chainId = await ethereum.request({ method: 'eth_chainId' });
-                        if (chainId === SEPOLIA_CHAIN_ID) {
-                            localStorage.setItem('userWallet', accounts[0]);
-                            window.location.href = '/home.html';
-                        }
-                    }
-                } catch (err) {
-                    console.log('Auto-connect failed (normal if not connected yet)');
-                }
-            }
-        });

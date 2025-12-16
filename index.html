@@ -4,58 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tokemon - Login</title>
-    <link rel="stylesheet" href="/css/load.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
 
     <!-- Web3.js via CDN (lightweight) -->
     <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
     
-    <style>
-        /* Optional inline fallback styles if your CSS fails to load */
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-        }
-        #bgvid {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -100;
-            transform: translateX(-50%) translateY(-50%);
-            background: #000;
-        }
-        h1 {
-            text-align: center;
-            margin-top: 10vh;
-        }
-        #logo {
-            max-width: 300px;
-        }
-        .play {
-            display: block;
-            margin: 40px auto;
-            padding: 15px 40px;
-            font-size: 1.4rem;
-            background: #f5c518;
-            color: #000;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s;
-        }
-    
-      
-        #loginText {
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
     <video autoplay muted loop playsinline id="bgvid" src="/assets/bgvid.mp4"></video>
@@ -63,8 +18,9 @@
     <h1><img src="/assets/Tokemon.png" id="logo" alt="Tokemon Logo"></h1>
 
     <button class="play" id="loginBtn">
-        <span id="loginText">Login with MetaMask</span>
+    <img src="/assets/Play.png" alt="Login with MetaMask">
     </button>
+
 
    <script src="js/index.js"></script>
 </body>

@@ -1,0 +1,127 @@
+/* marketplace.css */
+body {
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+#homebg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    object-fit: cover;
+}
+
+.topnav {
+  background-color: #FFCB05;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  color: #3466AF;
+  text-align: center;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ffffff;
+  color: #FF0000;
+  transition: 0.5s;
+
+}
+
+/* Add a color to the active/current link */
+.topnav a.active {
+  background-color: #3466AF;
+  color: #FFCB05;
+
+}
+
+.navlogo img {
+    height: 12px;
+    width: auto;
+}
+
+.marketplace-content {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    color: #3466AF;
+}
+
+.marketplace-content h1 {
+    text-align: center;
+    color: #3466AF;
+    margin-bottom: 30px;
+}   
+
+#coins {
+    font-size: 20px;
+    text-align: right;
+    margin: 20px 0;
+    font-weight: bold;
+    color: #3466AF;
+}
+
+#available-pokemon,
+#my-pokemon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+.pokemon-card {
+    background: white;
+    border: 4px solid #ccc;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    width: 220px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+.pokemon-card:hover {
+    transform: scale(1.05);
+}
+
+.pokemon-card img {
+    width: 120px;
+    height: 120px;
+    image-rendering: pixelated; /* Nice retro feel */
+}
+
+.pokemon-card p {
+    margin: 10px 0 5px;
+    text-transform: capitalize;
+}
+
+.pokemon-card button {
+    background: #ffcb05;
+    color: #3466AF;
+    border: 2px solid transparent;    /* Always reserve space for border */
+    padding: 12px 20px;
+    cursor: pointer;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;           /* Ensures padding + border don't add width */
+    transition: background 0.3s, color 0.3s, border-color 0.3s; /* Smooth hover */
+}
+
+.pokemon-card button:hover {
+    background: #ffffff;
+    color: #FF0000;
+    border: 2px solid #FFCB05;        /* Now visible, but space was already reserved */
+}
