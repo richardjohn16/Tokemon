@@ -1,15 +1,25 @@
-const pokemonList = [
-    "Bulbasaur", "Ivysaur", "Venusaur",
-    "Charmander", "Charmeleon", "Charizard",
-    "Squirtle", "Wartortle", "Blastoise",
-    "Caterpie", "Metapod", "Butterfree",
-    "Pikachu", "Raichu", "Sandshrew", "nidoran-f",
-    "nidoran-m", "Vulpix", "Oddish", "Paras",
-    "Venonat", "Psyduck", "Mankey", "Growlithe",
-    "Poliwag", "Abra", "Machop", "Bellsprout",
-    "Eevee", "Vaporeon", "Jolteon", "Flareon",
-    "Mew", "Mewtwo"
-];
+// battle.js - FULL COMPLETE VERSION
+// Owned Pokémon carousel with animated sprites + fallback to your static images
+
+function getOwnedPokemon() {
+    const stored = localStorage.getItem('ownedPokemon');
+    return stored ? JSON.parse(stored) : [];
+}
+
+let ownedPokemon = getOwnedPokemon();
+
+// Build pokemonList with animated front + fallback to saved static img
+let pokemonList = ownedPokemon.map(p => {
+    const lowerName = p.name.toLowerCase();
+    const animatedFront = `https://img.pokemondb.net/sprites/black-white/anim/normal/${lowerName}.gif`;
+
+    return {
+        name: p.name.charAt(0).toUpperCase() + p.name.slice(1),
+        lower: lowerName,
+        frontImg: animatedFront,           // Try animated first in carousel
+        fallbackImg: p.img || '/assets/placeholder.png'  // Your original captured image
+    };
+});
 
 const enemyList = [
     "bulbasaur", "ivysaur", "venusaur",
@@ -62,10 +72,10 @@ function addToBattleLog(message, isPlayer = false) {
     entry.textContent = message;
     entry.className = isPlayer ? 'log-player' : 'log-enemy';
     logEntries.appendChild(entry);
-    logEntries.scrollTop = logEntries.scrollHeight; // Auto-scroll
+    logEntries.scrollTop = logEntries.scrollHeight;
 }
 
-// === Message System (with animation) ===
+// === Message System ===
 function updateMessage(msg) {
     if (battleMessage) {
         battleMessage.textContent = msg;
@@ -80,35 +90,63 @@ function updateMessage(msg) {
     }
 }
 
-// === Carousel Update ===
+// === Carousel Update with Animated + Fallback ===
 function updateCarousel() {
-    const pokeName = pokemonList[currentIndex];
-    const pokeLower = pokeName.toLowerCase();
-    img.src = `https://img.pokemondb.net/sprites/black-white/anim/normal/${pokeLower}.gif`;
-    nameText.textContent = pokeName;
+    if (pokemonList.length === 0) {
+        img.src = '/assets/placeholder.png';
+        nameText.textContent = 'No Pokémon Owned';
+        document.getElementById("prevBtn").disabled = true;
+        document.getElementById("nextBtn").disabled = true;
+        document.getElementById("selectBtn").disabled = true;
+        return;
+    }
+
+    const poke = pokemonList[currentIndex];
+    img.src = poke.frontImg;  // Try animated GIF first
+
+    // If animated fails, fall back to your static image
+    img.onerror = () => {
+        img.onerror = null;
+        img.src = poke.fallbackImg;
+    };
+
+    nameText.textContent = poke.name;
+
+    document.getElementById("prevBtn").disabled = false;
+    document.getElementById("nextBtn").disabled = false;
+    document.getElementById("selectBtn").disabled = false;
 }
 
+// === Navigation ===
 document.getElementById("prevBtn").onclick = () => {
+    if (pokemonList.length === 0) return;
     currentIndex = (currentIndex - 1 + pokemonList.length) % pokemonList.length;
     updateCarousel();
 };
 
 document.getElementById("nextBtn").onclick = () => {
+    if (pokemonList.length === 0) return;
     currentIndex = (currentIndex + 1) % pokemonList.length;
     updateCarousel();
 };
 
-// === Select Pokémon ===
+// === Select Pokémon - with Animated Back Sprite + Fallback ===
 document.getElementById("selectBtn").onclick = () => {
+    if (pokemonList.length === 0) {
+        alert("You don't own any Pokémon yet!");
+        return;
+    }
+
     const selected = pokemonList[currentIndex];
-    playerPokemon = selected.toLowerCase();
+    const selectedName = selected.name;
+    playerPokemon = selected.lower;
+
+    const animatedBack = `https://img.pokemondb.net/sprites/black-white/anim/back-normal/${selected.lower}.gif`;
 
     selectedDisplay.innerHTML = `
         <div class="player-pokemon-container">
-            <h2>Your ${selected}</h2>
-            <img class="pokemon-selection-img" 
-                 src="https://img.pokemondb.net/sprites/black-white/anim/back-normal/${playerPokemon}.gif"
-                 alt="${selected}">
+            <h2>Your ${selectedName}</h2>
+            <img class="pokemon-selection-img" src="${animatedBack}" alt="${selectedName}">
             <div class="hp-section">
                 <span id="playerHPText" class="hp-text">100 / 100</span>
                 <div class="hp-bar-container">
@@ -117,6 +155,13 @@ document.getElementById("selectBtn").onclick = () => {
             </div>
         </div>
     `;
+
+    // Fallback if back animated sprite doesn't exist
+    const battleImg = selectedDisplay.querySelector('.pokemon-selection-img');
+    battleImg.onerror = () => {
+        battleImg.onerror = null;
+        battleImg.src = selected.fallbackImg;
+    };
 
     document.getElementById("pokemonCarouselContainer").style.display = "none";
     document.getElementById("opponentSelect").classList.remove("hidden");
@@ -150,7 +195,6 @@ function startBattle(count) {
     initBattle(enemyQueue[0]);
 }
 
-// === Initialize Each Battle (FIXED: enemyDisplayName declared first) ===
 function initBattle(enemyName) {
     currentEnemyName = enemyName;
     enemyHP = 100;
@@ -158,7 +202,6 @@ function initBattle(enemyName) {
 
     const enemyDisplayName = enemyName.charAt(0).toUpperCase() + enemyName.slice(1).replace(/-/g, ' ');
 
-    // Log enemy appearance
     addToBattleLog(`Wild ${enemyDisplayName} appeared!`, false);
 
     document.getElementById("enemyDisplay").innerHTML = `
@@ -175,8 +218,8 @@ function initBattle(enemyName) {
     `;
 
     createBattleMenu();
-    updateMessage("Battle Start! Choose your move.");
-    addToBattleLog("Battle Start! Choose your move.");
+    updateMessage("Battle Start! Throw Rock, Paper, or Scissors!");
+    addToBattleLog("Battle Start! Choose your throw.");
     updateHPBars();
     enableButtons();
 }
@@ -193,11 +236,11 @@ function createBattleMenu() {
 
     battleMenu.innerHTML = `
         <div class="move-grid">
-            <button id="attackBtn">Attack</button>
-            <button id="defendBtn">Defend</button>
+            <button id="rockBtn">✊ Rock</button>
+            <button id="paperBtn">✋ Paper</button>
         </div>
         <div class="move-center">
-            <button id="parryBtn">Parry</button>
+            <button id="scissorsBtn">✌️ Scissors</button>
         </div>
     `;
 
@@ -209,56 +252,76 @@ function createBattleMenu() {
         document.body.appendChild(battleMessage);
     }
 
-    document.getElementById('attackBtn').onclick = () => playerTurn('attack');
-    document.getElementById('defendBtn').onclick = () => playerTurn('defend');
-    document.getElementById('parryBtn').onclick = () => playerTurn('parry');
+    document.getElementById('rockBtn').onclick = () => playerTurn('rock');
+    document.getElementById('paperBtn').onclick = () => playerTurn('paper');
+    document.getElementById('scissorsBtn').onclick = () => playerTurn('scissors');
 
-    // Initialize log when menu is created
     initBattleLog();
 }
 
-// === Player Turn (with logging) ===
+// === Player Turn ===
 function playerTurn(move) {
     if (!battleActive) return;
     battleActive = false;
     disableButtons();
 
-    const moveText = move.charAt(0).toUpperCase() + move.slice(1);
-    updateMessage(`You chose ${moveText}...`);
-    addToBattleLog(`Player chose ${moveText}!`, true);
+    const moveDisplay = {
+        rock: "✊ Rock",
+        paper: "✋ Paper",
+        scissors: "✌️ Scissors"
+    };
+
+    const moveText = moveDisplay[move];
+    updateMessage(`You threw ${moveText}...`);
+    addToBattleLog(`You threw ${moveText}!`, true);
 
     setTimeout(() => {
-        const aiMoves = ['attack', 'defend', 'parry'];
+        const aiMoves = ['rock', 'paper', 'scissors'];
         const aiMove = aiMoves[Math.floor(Math.random() * 3)];
-        const aiMoveText = aiMove.charAt(0).toUpperCase() + aiMove.slice(1);
-        updateMessage(`Enemy used ${aiMoveText}!`);
-        addToBattleLog(`Opponent used ${aiMoveText}!`, false);
+        const aiMoveText = moveDisplay[aiMove];
+
+        updateMessage(`Enemy threw ${aiMoveText}!`);
+        addToBattleLog(`Enemy threw ${aiMoveText}!`, false);
 
         setTimeout(() => resolveTurn(move, aiMove), 1000);
     }, 1200);
 }
 
-// === Resolve Turn (with logging) ===
+// === Resolve Turn ===
 function resolveTurn(playerMove, aiMove) {
     let damageToPlayer = 0;
     let damageToEnemy = 0;
     let resultMsg = "";
+    let logMsg = "";
 
     if (playerMove === aiMove) {
-        resultMsg = "It's a tie! No damage.";
-        addToBattleLog("It's a tie! No damage taken.");
-    } else if (
-        (playerMove === 'attack' && aiMove === 'defend') ||
-        (playerMove === 'defend' && aiMove === 'parry') ||
-        (playerMove === 'parry' && aiMove === 'attack')
+        resultMsg = "It's a tie! Both threw the same!";
+        logMsg = "It's a tie! No damage taken.";
+        addToBattleLog(logMsg);
+    } 
+    else if (
+        (playerMove === 'rock' && aiMove === 'scissors') ||
+        (playerMove === 'paper' && aiMove === 'rock') ||
+        (playerMove === 'scissors' && aiMove === 'paper')
     ) {
         damageToEnemy = 20;
-        resultMsg = `Success! Enemy takes 20 damage!`;
-        addToBattleLog(`Success! Enemy takes 20 damage!`, true);
-    } else {
+        const winReason = 
+            playerMove === 'rock' ? "Rock crushes Scissors!" :
+            playerMove === 'paper' ? "Paper covers Rock!" :
+                                    "Scissors cuts Paper!";
+        resultMsg = `You win! ${winReason} Enemy takes 20 damage!`;
+        logMsg = `Player wins! ${winReason} Enemy -20 HP`;
+        addToBattleLog(logMsg, true);
+    } 
+    else {
         damageToPlayer = 20;
-        resultMsg = `Failed! You take 20 damage!`;
-        addToBattleLog(`Failed! Player takes 20 damage!`, false);
+        const loseReason = 
+            aiMove === 'rock' ? "Rock crushes Scissors!" :
+            aiMove === 'paper' ? "Paper covers Rock!" :
+                                "Scissors cuts Paper!";
+        resultMsg = `You lose! ${loseReason} You take 20 damage!`;
+        logMsg = `Enemy wins! ${loseReason} Player -20 HP`;
+        addToBattleLog(logMsg, false);
     }
 
     playerHP = Math.max(0, playerHP - damageToPlayer);
@@ -270,7 +333,7 @@ function resolveTurn(playerMove, aiMove) {
     setTimeout(() => checkBattleEnd(), 1500);
 }
 
-// === Update HP Bars and Faint Animation ===
+// === Update HP Bars ===
 function updateHPBars() {
     const pText = document.querySelector('#playerHPText');
     const pBar = document.getElementById('playerHPBar');
@@ -328,7 +391,7 @@ function enableButtons() {
     battleActive = true;
 }
 
-// === Check Win/Lose/Next Enemy ===
+// === Check Battle End ===
 function checkBattleEnd() {
     if (playerHP <= 0) {
         showLose();
@@ -403,14 +466,43 @@ function resetGame() {
     document.querySelectorAll('.opp-btn').forEach(b => b.classList.remove('selected'));
     document.querySelectorAll('.fainted').forEach(el => el.classList.remove('fainted'));
 
-    updateCarousel();
+    // Refresh owned Pokémon in case new ones were caught
+    ownedPokemon = getOwnedPokemon();
+    pokemonList = ownedPokemon.map(p => {
+        const lowerName = p.name.toLowerCase();
+        const animatedFront = `https://img.pokemondb.net/sprites/black-white/anim/normal/${lowerName}.gif`;
+        return {
+            name: p.name.charAt(0).toUpperCase() + p.name.slice(1),
+            lower: lowerName,
+            frontImg: animatedFront,
+            fallbackImg: p.img || '/assets/placeholder.png'
+        };
+    });
+    currentIndex = 0;
+
+    if (pokemonList.length === 0) {
+        document.getElementById("pokemonCarouselContainer").innerHTML = `
+            <div style="text-align: center; padding: 60px 20px; color: #3466AF;">
+                <h2>You don't own any Pokémon yet!</h2>
+                <p>Catch some first before battling.</p>
+                <button onclick="window.location.href='/inventory.html'" 
+                        style="padding: 15px 30px; margin-top: 20px; font-family: 'Press Start 2P', cursive; 
+                               font-size: 16px; background: #FFCB05; color: #3466AF; border: none; 
+                               border-radius: 8px; cursor: pointer;">
+                    Go to Inventory
+                </button>
+            </div>
+        `;
+    } else {
+        updateCarousel();
+    }
 }
 
 // === Faint Animation ===
 function triggerFaintAnimation(imgElement) {
     imgElement.style.animation = 'none';
     imgElement.offsetHeight;
-    imgElement.style.animation = 'faintShake 0.4s ease-in-out, faintFade 1.2s ease-out forwards';
+    imgElement.style.animation = 'faintShake 0.4s ease-in-out, faintFade 1.2s ease-out fogitwards';
     imgElement.style.animationDelay = '0s, 0.4s';
 }
 
@@ -418,4 +510,19 @@ function triggerFaintAnimation(imgElement) {
 document.getElementById("selectPokemonBtn").onclick = resetGame;
 
 // === Initial Load ===
-updateCarousel();
+if (pokemonList.length === 0) {
+    document.getElementById("pokemonCarouselContainer").innerHTML = `
+        <div style="text-align: center; padding: 60px 20px; color: #3466AF;">
+            <h2>You don't own any Pokémon yet!</h2>
+            <p>Catch some first before battling.</p>
+            <button onclick="window.location.href='/inventory.html'" 
+                    style="padding: 15px 30px; margin-top: 20px; font-family: 'Press Start 2P', cursive; 
+                           font-size: 16px; background: #FFCB05; color: #3466AF; border: none; 
+                           border-radius: 8px; cursor: pointer;">
+                Go to Inventory
+            </button>
+        </div>
+    `;
+} else {
+    updateCarousel();
+}
